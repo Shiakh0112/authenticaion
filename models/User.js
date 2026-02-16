@@ -22,14 +22,6 @@ const userSchema = new mongoose.Schema({
     minlength: [6, 'Password must be at least 6 characters'],
     select: false
   },
-  isVerified: {
-    type: Boolean,
-    default: false
-  },
-  emailVerificationOTP: String,
-  emailVerificationExpires: Date,
-  resetPasswordOTP: String,
-  resetPasswordExpires: Date,
   createdAt: {
     type: Date,
     default: Date.now
@@ -44,10 +36,6 @@ userSchema.pre('save', async function(next) {
 
 userSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
-};
-
-userSchema.methods.generateOTP = function() {
-  return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
 module.exports = mongoose.model('User', userSchema);
